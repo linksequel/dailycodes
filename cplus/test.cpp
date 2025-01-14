@@ -2,18 +2,18 @@
 #include <iomanip>
 #include <algorithm>
 #include <string>
-
+using namespace std;
 
 template <typename T>
 class Set {
 public:
     Set(T *input, int inputlen);
-    void display() {
-        std::cout << "total len of input is " << totalLen << std::endl; 
+    void display(string s) {
+        cout << "total len of "<< s << " is: " << totalLen << endl; 
         for (int i = 0; i < totalLen; i++) {
-            std::cout << deduplication[i] << " ";
+            cout << deduplication[i] << " ";
         }
-        std::cout << std::endl;
+        cout << endl;
     }
     static Set<T> unionFuc(const Set<T>& A, const Set<T>& B);
     // 声明为静态成员函数
@@ -113,11 +113,11 @@ Set<T> Set<T>::unionFuc(const Set<T>& input1, const Set<T>& input2) {
 int main() {
     int a[] = {1, 2, 2, 3, 4, 5};
     int b[] = {6, 7, 5, 8, 4, 5};
-    Set<int> a1(a, 6);
-    Set<int> b1(b, 6);
-    a1.display();
-    // 调用静态成员函数
-    Set<int> c1 = Set<int>::unionFuc(a1, b1);
-    c1.display();
+    Set<int> input1(a, 6);
+    Set<int> input2(b, 6);
+    Set<int> merge = Set<int>::unionFuc(input1, input2);
+    input1.display("input1");
+    input2.display("input2");
+    merge.display("merge");
     return 0;
 }
