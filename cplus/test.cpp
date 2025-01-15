@@ -15,7 +15,9 @@ public:
         }
         cout << endl;
     }
-    static Set<T> unionFuc(const Set<T>& A, const Set<T>& B);
+    // 声明友元函数
+    template <typename U> friend Set<U> unionFuc(const Set<U>& A, const Set<U>& B);
+
     // 声明为静态成员函数
     static bool checkCurrentDuplicated(T current, const Set<T>& before);
 
@@ -62,7 +64,6 @@ private:
 
 
 template <typename T>
-// 实现为静态成员函数
 bool Set<T>::checkCurrentDuplicated(T current, const Set<T>& before) {
     if (before.deduplication == nullptr) {
         return false;
@@ -75,15 +76,15 @@ bool Set<T>::checkCurrentDuplicated(T current, const Set<T>& before) {
     return false;
 }
 
-
 template <typename T>
 Set<T>::Set(T *input, int inputlen) {
     deduplication = removeDuplicates(input, inputlen);
 }
 
 
+// 友元函数定义
 template <typename T>
-Set<T> Set<T>::unionFuc(const Set<T>& input1, const Set<T>& input2) {
+Set<T> unionFuc(const Set<T>& input1, const Set<T>& input2) {
     int finalLen = input1.totalLen + input2.totalLen;
     T *res = new T[finalLen];
     int idx = 0;
@@ -93,7 +94,7 @@ Set<T> Set<T>::unionFuc(const Set<T>& input1, const Set<T>& input2) {
     }
     // 检查 input2 的元素是否在 input1 中出现过，如果没有则添加到 res 中
     for (int curIdx = 0; curIdx < input2.totalLen; curIdx++) {
-        bool showsOnInput1 = checkCurrentDuplicated(input2.deduplication[curIdx], input1);
+        bool showsOnInput1 = Set<T>::checkCurrentDuplicated(input2.deduplication[curIdx], input1);
         if (!showsOnInput1) {
             res[idx++] = input2.deduplication[curIdx];
         }
@@ -115,7 +116,7 @@ int main() {
     int b[] = {6, 7, 5, 8, 4, 5};
     Set<int> input1(a, 6);
     Set<int> input2(b, 6);
-    Set<int> merge = Set<int>::unionFuc(input1, input2);
+    Set<int> merge = unionFuc(input1, input2);
     input1.display("input1");
     input2.display("input2");
     merge.display("merge");
